@@ -1,7 +1,10 @@
-﻿Console.WriteLine("Hi banana!");
+﻿using mathletics.lib.game;
 
-string[] operations = ["+", "-", "*", "/"];
+var programRunning = true;
 
-int minValue = 1;
-int maxValue = 100;
-
+Console.WriteLine("Welcome to the incredible game Mathletics!");
+var game = new Game();
+while (programRunning)
+{
+    game.PlayRound();
+}
