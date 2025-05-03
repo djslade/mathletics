@@ -1,8 +1,7 @@
 namespace mathletics.lib.match
 {
-    public class SubMatch : Match
+    public class SubMatch(string difficulty) : Match(difficulty, "-")
     {
-        public SubMatch() : base("-") { }
         protected override void SetAnswer()
         {
             correctAnswer = firstOperand - secondOperand;

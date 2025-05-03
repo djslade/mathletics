@@ -1,14 +1,11 @@
 namespace mathletics.lib.match
 {
-    public class DivMatch : Match
+    public class DivMatch(string difficulty) : Match(difficulty, "/")
     {
-        public DivMatch() : base("/") { }
-
-
         protected override void SetSecondOperand()
         {
             var factors = new List<int>();
-            for (int i = 1; i <= firstOperand; i++)
+            for (int i = minValue; i <= firstOperand; i++)
             {
                 if (firstOperand % i != 0) continue;
                 factors.Add(i);
