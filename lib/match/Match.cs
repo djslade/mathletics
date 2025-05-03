@@ -4,17 +4,21 @@ namespace mathletics.lib.match
     {
         protected int firstOperand;
         protected int secondOperand;
+        protected string operation;
 
         protected int correctAnswer;
         protected int playerAnswer;
+        public bool PlayerWon { get => correctAnswer == playerAnswer; }
+        public string Question { get => $"{firstOperand} {operation} {secondOperand}"; }
 
 
 
-        public Match()
+        public Match(string op)
         {
             SetFirstOperand();
             SetSecondOperand();
             SetAnswer();
+            operation = op;
         }
 
         private static int SetRandomOperand()
@@ -36,8 +40,10 @@ namespace mathletics.lib.match
 
         protected abstract void SetAnswer();
 
-        public abstract string Question();
-
+        public void GiveAnswer(int answer)
+        {
+            playerAnswer = answer;
+        }
     }
 }
 

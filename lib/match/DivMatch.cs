@@ -2,6 +2,8 @@ namespace mathletics.lib.match
 {
     public class DivMatch : Match
     {
+        public DivMatch() : base("/") { }
+
 
         protected override void SetSecondOperand()
         {
@@ -18,11 +20,6 @@ namespace mathletics.lib.match
         protected override void SetAnswer()
         {
             correctAnswer = firstOperand / secondOperand;
-        }
-
-        public override string Question()
-        {
-            return $"{firstOperand} / {secondOperand}";
         }
     }
 }
