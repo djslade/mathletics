@@ -30,14 +30,23 @@ namespace mathletics.lib.game
         private string GetOpFromUser()
         {
             string? op = "";
-            Console.WriteLine($"Enter an operator, options are {string.Join(",", _operators)}");
+            Console.WriteLine($"Enter an operator or 'random' for a random game, options are {string.Join(", ", _operators)}");
             while (op == "")
             {
                 var input = Console.ReadLine();
                 if (!_operators.Contains(input))
                 {
-                    Console.WriteLine("Please enter a valid operator");
-                    continue;
+                    if (input == "random")
+                    {
+                        var random = new Random();
+                        input = _operators[random.Next(_operators.Length)];
+                    }
+                    else
+                    {
+                        Console.WriteLine("Please enter a valid operator");
+                        continue;
+                    }
+
                 }
                 if (input == null) throw new Exception("user input is null");
                 op = input.Trim();
@@ -47,12 +56,39 @@ namespace mathletics.lib.game
 
         private static int GetAnswerFromUser(string question)
         {
-            Console.WriteLine($"What is {question}?");
-            while (true)
+            var cancellationToken = new CancellationTokenSource();
+            Task<int> inputTask = Task.Run(() =>
             {
-                if (int.TryParse(Console.ReadLine(), out int answer)) return answer;
-                Console.WriteLine("Please enter a valid integer");
+                Console.WriteLine($"What is {question}?");
+                while (true)
+                {
+                    if (int.TryParse(Console.ReadLine(), out int answer))
+                    {
+                        cancellationToken.Cancel();
+                        return answer;
+                    }
+                    Console.WriteLine("Please enter a valid integer");
+                }
+            });
+
+            Task countdownTask = Task.Run(async () =>
+            {
+                for (int i = 15; i > 0; i--)
+                {
+                    if (cancellationToken.Token.IsCancellationRequested) return;
+                    Console.Write($"\r{i} seconds left");
+                    await Task.Delay(1000);
+                }
+                Console.WriteLine("\n");
+                cancellationToken.Cancel();
+            });
+
+            if (inputTask.Wait(TimeSpan.FromSeconds(15)))
+            {
+                return inputTask.Result;
             }
+            Console.WriteLine("Time's up!");
+            return 0;
         }
 
         private void Play()

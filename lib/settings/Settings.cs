@@ -3,7 +3,7 @@ namespace mathletics.lib.settings
     public class Settings
     {
         private string[] _difficultyOptions = ["easy", "normal", "hard"];
-        private string _difficulty = "hard";
+        private string _difficulty = "normal";
 
         public string[] DifficultyOptions { get => _difficultyOptions; }
         public string Difficulty
